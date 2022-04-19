@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import styles from './Button.module.css'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: 'clear' | 'blue'
+  color?: 'clear' | 'blue' | 'red'
 }
 
 const Button = ({

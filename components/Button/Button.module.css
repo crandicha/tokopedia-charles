@@ -1,5 +1,6 @@
 .button {
   @apply py-2 px-4 rounded font-medium flex items-center justify-center;
+  min-width: 100px;
 }
 
 .button[aria-disabled='true'] {
@@ -19,7 +20,7 @@
 }
 
 .blue{
-  @apply bg-blue-400;
+  @apply bg-blue-400 text-white;
 }
 
 .blue:hover {
@@ -28,4 +29,16 @@
 
 .blue:active {
   @apply bg-blue-600;
+}
+
+.red {
+  @apply bg-red-400 text-white;
+}
+
+.red:hover {
+  @apply bg-red-500;
+}
+
+.red:active {
+  @apply bg-red-600;
 }
