@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 import { LayoutContext } from 'components/Layout'
 import Spinner from 'components/Spinner'
@@ -146,6 +147,13 @@ const PokemonDetail = ({ type = 'detail' }: PokemonDetailProps) => {
       }}
       className="h-full"
     >
+      <Head>
+        <title>{capitalize(pokemonData?.name || '')}</title>
+        <meta
+          name="description"
+          content={`${capitalize(pokemonData?.name || '')} Details`}
+        />
+      </Head>
       <div className="h-[50vh] flex items-center justify-center">
         <div className="w-1/2 height-1/2 md:w-[384px] md:h-[384px]">
           {pokemonSprite && imageSrc && (

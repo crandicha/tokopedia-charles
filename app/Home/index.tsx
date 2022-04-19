@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 
 import { getPokemonList } from 'api/pokemon'
 import PokemonCard from 'components/PokemonCard'
@@ -78,6 +79,15 @@ const Home = ({ type = 'home' }: HomeProps) => {
 
   return (
     <div>
+      <Head>
+        <title>{type === 'home' ? 'Pokedex' : 'My Pokemons'}</title>
+        <meta
+          name="description"
+          content={
+            type === 'home' ? 'List of pokemons' : 'List of owned pokemons'
+          }
+        />
+      </Head>
       <div className="flex flex-row flex-wrap justify-center gap-4 px-4">
         {type === 'home' &&
           pokemons?.map?.((pokemon, index) => (
