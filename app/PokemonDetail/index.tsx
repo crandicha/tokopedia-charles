@@ -24,6 +24,7 @@ import type {
   PokemonDetail as PokemonDetailTypes,
 } from 'types/pokemon'
 import md5 from 'md5'
+import clsx from 'clsx'
 
 type CatchPokemonState = 'idle' | 'attempt' | 'waiting' | 'failed' | 'success'
 
@@ -38,6 +39,9 @@ const PokemonDetail = ({ type = 'detail' }: PokemonDetailProps) => {
     React.useContext(LayoutContext)
   const router = useRouter()
   const { name: pokemonName, id } = router.query
+  const [myPokemonListData, setMyPokemonListData] = React.useState<
+    MyPokemonListData[]
+  >([])
   const [pokemonNickname, setPokemonNickname] = React.useState<string>('')
   const [pokemonSprite, setPokemonSprite] = React.useState<string>('')
   const [backgroundColor, setBackgroundColor] = React.useState<string>('')
@@ -64,6 +68,14 @@ const PokemonDetail = ({ type = 'detail' }: PokemonDetailProps) => {
     setIsLoading(false)
   }
 
+  const isNicknameTaken = React.useMemo(() => {
+    return (
+      (myPokemonListData || [])?.filter(
+        (data) => data.nickname === pokemonNickname
+      ).length > 0
+    )
+  }, [myPokemonListData, pokemonNickname])
+
   const catchPokemon = async () => {
     const isSuccess = Math.floor(Math.random() * 100) > 50
     setCatchPokemonState('attempt')
@@ -79,7 +91,7 @@ const PokemonDetail = ({ type = 'detail' }: PokemonDetailProps) => {
 
   const savePokemon = async () => {
     const dbData = await getCache(MY_POKEMON_LIST_KEY)
-    setCache(MY_POKEMON_LIST_KEY, [
+    const newData = [
       ...(dbData || []),
       {
         nickname: pokemonNickname,
@@ -94,7 +106,9 @@ const PokemonDetail = ({ type = 'detail' }: PokemonDetailProps) => {
         id: md5(new Date().toISOString()),
         name: pokemonData?.name,
       },
-    ])
+    ]
+    setCache(MY_POKEMON_LIST_KEY, newData)
+    setMyPokemonListData(newData)
     setPokemonNickname('')
     setCatchPokemonState('idle')
   }
@@ -139,6 +153,12 @@ const PokemonDetail = ({ type = 'detail' }: PokemonDetailProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pokemonName, id])
+
+  React.useEffect(() => {
+    getCache(MY_POKEMON_LIST_KEY).then((data) => {
+      setMyPokemonListData(data)
+    })
+  }, [])
 
   return (
     <div
@@ -212,13 +232,17 @@ const PokemonDetail = ({ type = 'detail' }: PokemonDetailProps) => {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           setPokemonNickname(e.target.value)
                         }
+                        className={clsx(isNicknameTaken && 'border-red-500')}
                       />
+                      {isNicknameTaken && (
+                        <div className="text-red-500">Nickname taken</div>
+                      )}
                     </div>
                     <div className="flex flex-row gap-4">
                       <Button
                         color="blue"
                         onClick={savePokemon}
-                        disabled={!pokemonNickname}
+                        disabled={!pokemonNickname || isNicknameTaken}
                       >
                         Save
                       </Button>
