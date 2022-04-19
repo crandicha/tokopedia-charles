@@ -37,5 +37,5 @@ yarn-error.log*
 *.tsbuildinfo
 
 # pwa
-/public/sw*
-/public/workbox*
+**/public/sw.*
+**/public/workbox.*
