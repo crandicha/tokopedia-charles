@@ -29,7 +29,7 @@ type CatchPokemonState = 'idle' | 'attempt' | 'waiting' | 'failed' | 'success'
 const pause = (ms: number) => new Promise((res) => setTimeout(res, ms))
 
 interface PokemonDetailProps {
-  type: 'detail' | 'my-pokemon-detail'
+  type?: 'detail' | 'my-pokemon-detail'
 }
 
 const PokemonDetail = ({ type = 'detail' }: PokemonDetailProps) => {
