@@ -94,6 +94,7 @@ const Home = ({ type = 'home' }: HomeProps) => {
               nickname={data?.nickname}
               key={index}
               type={type}
+              id={data?.id}
               onRelease={() => releasePokemon(data?.id)}
             />
           ))}

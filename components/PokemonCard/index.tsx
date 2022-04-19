@@ -15,6 +15,7 @@ interface PokemonCardProps {
   data: Pokemon
   nickname?: string
   owned?: number
+  id?: string
   type?: 'home' | 'my-pokemon'
   onRelease?: () => void
 }
@@ -22,13 +23,15 @@ interface PokemonCardProps {
 const PokemonCard = ({
   data,
   owned,
-  type,
+  type = 'home',
   nickname,
   onRelease,
+  id,
 }: PokemonCardProps) => {
   const pokemonSprite = getPokemonSprite(data?.pokemonID)
+  const url = type === 'home' ? `/pokemon/${data?.name}` : `/my-pokemons/${id}`
   return (
-    <Link href={`/pokemon/${data?.name}`}>
+    <Link href={url}>
       <a className={clsx('relative hover:scale-110 hover:shadow-xl')}>
         {!!owned && (
           <div className="absolute top-[5px] left-[5px] bg-white rounded-full w-6 h-6 flex justify-center items-center">
