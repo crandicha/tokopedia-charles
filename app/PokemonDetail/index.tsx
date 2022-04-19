@@ -18,18 +18,25 @@ import PokeballCloseSprite from 'public/images/pokeball.png'
 import { setCache, getCache, MY_POKEMON_LIST_KEY } from 'utils/helpers/cache'
 import styles from './PokemonDetail.module.css'
 
-import type { PokemonDetail as PokemonDetailTypes } from 'types/pokemon'
+import type {
+  MyPokemonListData,
+  PokemonDetail as PokemonDetailTypes,
+} from 'types/pokemon'
 import md5 from 'md5'
 
 type CatchPokemonState = 'idle' | 'attempt' | 'waiting' | 'failed' | 'success'
 
 const pause = (ms: number) => new Promise((res) => setTimeout(res, ms))
 
-const PokemonDetail = () => {
+interface PokemonDetailProps {
+  type: 'detail' | 'my-pokemon-detail'
+}
+
+const PokemonDetail = ({ type = 'detail' }: PokemonDetailProps) => {
   const { setTitle, setHeaderColor, setHeaderTextColor } =
     React.useContext(LayoutContext)
   const router = useRouter()
-  const { name: pokemonName } = router.query
+  const { name: pokemonName, id } = router.query
   const [pokemonNickname, setPokemonNickname] = React.useState<string>('')
   const [pokemonSprite, setPokemonSprite] = React.useState<string>('')
   const [backgroundColor, setBackgroundColor] = React.useState<string>('')
@@ -91,6 +98,18 @@ const PokemonDetail = () => {
     setCatchPokemonState('idle')
   }
 
+  const releasePokemon = async () => {
+    const dbData: MyPokemonListData[] = await getCache(MY_POKEMON_LIST_KEY)
+    const newData = dbData?.filter?.((data) => data.id !== id)
+    setCache(MY_POKEMON_LIST_KEY, newData)
+    router.replace('/my-pokemons')
+  }
+
+  const getCachedPokemonDataById = async (id: string) => {
+    const dbData: MyPokemonListData[] = await getCache(MY_POKEMON_LIST_KEY)
+    return dbData?.filter?.((data) => data.id === id)?.[0] || null
+  }
+
   React.useEffect(() => {
     const backgroundColor =
       POKEMON_COLORS?.[
@@ -106,10 +125,19 @@ const PokemonDetail = () => {
   }, [pokemonData])
 
   React.useEffect(() => {
-    setTitle(capitalize(pokemonName as string))
-    loadPokemonData(pokemonName as string)
+    if (type === 'detail') {
+      setTitle(capitalize(pokemonName as string))
+      loadPokemonData(pokemonName as string)
+    } else {
+      getCachedPokemonDataById(id as string).then((data) => {
+        if (data) {
+          setPokemonData(data?.data)
+          setTitle(capitalize(data?.nickname))
+        }
+      })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pokemonName])
+  }, [pokemonName, id])
 
   return (
     <div
@@ -145,56 +173,66 @@ const PokemonDetail = () => {
         )}
         {!isLoading && (
           <div className="flex flex-col gap-4 max-w-[960px] m-auto">
-            {catchPokemonState !== 'success' ? (
-              <div className="w-full flex justify-center">
-                <Button
-                  className="mb-4 shadow-lg !rounded-full w-[100px] h-[100px] hover:scale-125"
-                  color="blue"
-                  onClick={catchPokemon}
-                  disabled={catchPokemonState !== 'idle'}
-                >
-                  <Image
-                    src={PokeballCloseSprite}
-                    width="100%"
-                    height="100%"
-                    alt="Pokeball"
-                  ></Image>
-                </Button>
-              </div>
+            {type === 'detail' ? (
+              <>
+                {catchPokemonState !== 'success' ? (
+                  <div className="w-full flex justify-center">
+                    <Button
+                      className="mb-4 shadow-lg !rounded-full w-[100px] h-[100px] hover:scale-125"
+                      color="blue"
+                      onClick={catchPokemon}
+                      disabled={catchPokemonState !== 'idle'}
+                    >
+                      <Image
+                        src={PokeballCloseSprite}
+                        width="100%"
+                        height="100%"
+                        alt="Pokeball"
+                      ></Image>
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col p-4 items-center rounded-lg shadow-md bg-gray-100 gap-4">
+                    <div className="flex-1 font-semibold text-lg">
+                      Pokemon Catched
+                    </div>
+                    <div>
+                      <div>Nickname</div>
+                      <Input
+                        type="text"
+                        value={pokemonNickname}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setPokemonNickname(e.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-row gap-4">
+                      <Button
+                        color="blue"
+                        onClick={savePokemon}
+                        disabled={!pokemonNickname}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        color="red"
+                        onClick={() => setCatchPokemonState('idle')}
+                      >
+                        Release
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </>
             ) : (
-              <div className="flex flex-col p-4 items-center rounded-lg shadow-md bg-gray-100 gap-4">
-                <div className="flex-1 font-semibold text-lg">
-                  Pokemon Catched
-                </div>
-                <div>
-                  <div>Nickname</div>
-                  <Input
-                    type="text"
-                    value={pokemonNickname}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setPokemonNickname(e.target.value)
-                    }
-                  />
-                </div>
-                <div className="flex flex-row gap-4">
-                  <Button
-                    color="blue"
-                    onClick={savePokemon}
-                    disabled={!pokemonNickname}
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    color="red"
-                    onClick={() => setCatchPokemonState('idle')}
-                  >
-                    Release
-                  </Button>
-                </div>
+              <div className="w-full flex justify-center">
+                <Button color="red" onClick={releasePokemon}>
+                  Release
+                </Button>
               </div>
             )}
             <div className="font-semibold flex justify-center capitalize text-xl">
-              {pokemonName}
+              {pokemonData?.name}
             </div>
             <div className="flex flex-col p-4 items-center rounded-lg shadow-md bg-gray-100 gap-4">
               <div className="flex-1 font-semibold text-lg">Type</div>
