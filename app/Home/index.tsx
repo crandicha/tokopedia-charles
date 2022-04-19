@@ -3,15 +3,19 @@ import React from 'react'
 import { getPokemonList } from 'api/pokemon'
 import PokemonCard from 'components/PokemonCard'
 import Spinner from 'components/Spinner'
-import { getCache, MY_POKEMON_LIST_KEY } from 'utils/helpers/cache'
+import { getCache, MY_POKEMON_LIST_KEY, setCache } from 'utils/helpers/cache'
 
-import type { Pokemon, PokemonDetail } from 'types/pokemon'
+import type { MyPokemonListData, Pokemon } from 'types/pokemon'
 
-const Home = () => {
+interface HomeProps {
+  type?: 'home' | 'my-pokemon'
+}
+
+const Home = ({ type = 'home' }: HomeProps) => {
   const limit = 20
   const loaderRef = React.useRef<any>(null)
   const [myPokemonListData, setMyPokemonListData] = React.useState<
-    { name: string; nickname: string; data: PokemonDetail }[]
+    MyPokemonListData[]
   >([])
   const [totalPokemon, setTotalPokemon] = React.useState<number>(0)
   const [offset, setOffset] = React.useState<number>(0)
@@ -41,6 +45,13 @@ const Home = () => {
     return myPokemonListData?.filter((data) => data.name === name).length
   }
 
+  const releasePokemon = async (id: string) => {
+    const dbData: MyPokemonListData[] = await getCache(MY_POKEMON_LIST_KEY)
+    const newData = dbData?.filter?.((data) => data.id !== id)
+    setCache(MY_POKEMON_LIST_KEY, newData)
+    setMyPokemonListData(newData)
+  }
+
   React.useEffect(() => {
     const observer = new IntersectionObserver(observerCallback, {
       root: null,
@@ -57,29 +68,47 @@ const Home = () => {
   }, [offset])
 
   React.useEffect(() => {
-    loadPokemons()
     getCache(MY_POKEMON_LIST_KEY).then((data) => {
       setMyPokemonListData(data)
     })
+    if (type === 'home') {
+      loadPokemons()
+    }
   }, [])
 
   return (
     <div>
       <div className="flex flex-row flex-wrap justify-center gap-4 px-4">
-        {pokemons?.map?.((pokemon, index) => (
-          <PokemonCard
-            data={pokemon}
-            key={index}
-            owned={countHowManyPokemonOwned(pokemon.name)}
-          />
-        ))}
+        {type === 'home' &&
+          pokemons?.map?.((pokemon, index) => (
+            <PokemonCard
+              data={pokemon}
+              key={index}
+              owned={countHowManyPokemonOwned(pokemon.name)}
+            />
+          ))}
+        {type === 'my-pokemon' &&
+          myPokemonListData?.map?.((data, index) => (
+            <PokemonCard
+              data={data?.data}
+              nickname={data?.nickname}
+              key={index}
+              type={type}
+              onRelease={() => releasePokemon(data?.id)}
+            />
+          ))}
       </div>
+      {type === 'my-pokemon' && myPokemonListData?.length === 0 && (
+        <div className="text-lg font-semibold text-center">
+          You have no pokemon
+        </div>
+      )}
       {isLoading && (
         <div className="my-20">
           <Spinner />
         </div>
       )}
-      <div ref={loaderRef}></div>
+      {type === 'home' && <div ref={loaderRef}></div>}
     </div>
   )
 }

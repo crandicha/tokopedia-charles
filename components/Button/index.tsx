@@ -1,9 +1,11 @@
 import React from 'react'
 import clsx from 'clsx'
+
 import styles from './Button.module.css'
 
+export type ButtonColors = 'clear' | 'blue' | 'red' | 'white'
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: 'clear' | 'blue' | 'red'
+  color?: ButtonColors
 }
 
 const Button = ({
@@ -11,7 +13,7 @@ const Button = ({
   className,
   disabled,
   onClick,
-  color = 'clear',
+  color = 'white',
   ...buttonProps
 }: ButtonProps) => {
   const classes = clsx(styles.button, styles[color], className)

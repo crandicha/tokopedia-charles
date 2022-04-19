@@ -26,9 +26,7 @@ export type StatName =
   | 'special-defense'
   | 'speed'
 
-export type Pokemon = {
-  name: string
-  pokemonID: number
+export type PokemonSpecies = {
   species: {
     types: {
       type: {
@@ -38,9 +36,14 @@ export type Pokemon = {
   }[]
 }
 
-export type PokemonDetail = {
+export type PokemonBasicData = {
   name: string
-  pokemonID: string
+  pokemonID: number
+}
+
+export type Pokemon = PokemonSpecies & PokemonBasicData
+
+export type PokemonDetail = PokemonBasicData & {
   types: {
     type: {
       name: PokemonType
@@ -58,4 +61,11 @@ export type PokemonDetail = {
       name: StatName
     }
   }[]
+}
+
+export type MyPokemonListData = {
+  name: string
+  nickname: string
+  data: PokemonDetail & PokemonSpecies
+  id: string
 }

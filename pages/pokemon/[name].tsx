@@ -1,10 +1,11 @@
 import React from 'react'
+
 import App from 'app/PokemonDetail'
 import Layout from 'components/Layout'
 
 const PokemonDetailPage = () => {
   return (
-    <Layout hasBackButton>
+    <Layout hasBackButton buttonColor="clear">
       <App />
     </Layout>
   )
