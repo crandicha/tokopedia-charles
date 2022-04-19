@@ -17,3 +17,15 @@
 .clear:active {
   @apply bg-white bg-opacity-50
 }
+
+.blue{
+  @apply bg-blue-400;
+}
+
+.blue:hover {
+  @apply bg-blue-500;
+}
+
+.blue:active {
+  @apply bg-blue-600;
+}
