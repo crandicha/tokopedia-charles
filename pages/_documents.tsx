@@ -4,6 +4,11 @@ class BaseDocument extends Document {
     return (
       <Html>
         <Head>
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+          />
+          <link rel="manifest" href="/manifest.json" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
