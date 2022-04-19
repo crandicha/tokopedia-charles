@@ -69,7 +69,7 @@ const Home = ({ type = 'home' }: HomeProps) => {
 
   React.useEffect(() => {
     getCache(MY_POKEMON_LIST_KEY).then((data) => {
-      setMyPokemonListData(data)
+      setMyPokemonListData(data || [])
     })
     if (type === 'home') {
       loadPokemons()
