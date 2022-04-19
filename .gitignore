@@ -38,4 +38,4 @@ yarn-error.log*
 
 # pwa
 **/public/sw.*
-**/public/workbox.*
+**/public/workbox-*
