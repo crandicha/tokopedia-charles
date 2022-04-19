@@ -88,7 +88,7 @@ const Home = ({ type = 'home' }: HomeProps) => {
           }
         />
       </Head>
-      <div className="flex flex-row flex-wrap justify-center gap-4 px-4">
+      <div className="flex flex-row flex-wrap justify-evenly gap-4 px-4">
         {type === 'home' &&
           pokemons?.map?.((pokemon, index) => (
             <PokemonCard

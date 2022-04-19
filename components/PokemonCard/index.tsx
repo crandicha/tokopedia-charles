@@ -40,21 +40,21 @@ const PokemonCard = ({
         )}
         <div
           className={clsx(
-            'w-[200px] rounded-md p-2 flex flex-col shadow-md cursor-pointer',
+            'w-[300px] rounded-md p-2 flex flex-col shadow-md cursor-pointer',
             pokemonStyles[
               `pokemon-${data?.species?.[0]?.types?.[0]?.type?.name}`
             ]
           )}
         >
-          <div className="flex justify-center items-center h-[100px]">
+          <div className="flex justify-center items-center h-[225px]">
             <Image
               src={pokemonSprite}
-              width={80}
-              height={80}
+              width={150}
+              height={150}
               alt={data?.name}
             />
           </div>
-          <div className="bg-white p-2 rounded-md">
+          <div className="bg-white p-2 rounded-md h-1/4">
             <div className="mb-2 text-center">
               <div className="font-semibold capitalize">
                 #{data?.pokemonID} {data?.name}{' '}
