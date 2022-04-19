@@ -18,14 +18,44 @@ export type PokemonType =
   | 'steel'
   | 'flying'
 
+export type StatName =
+  | 'hp'
+  | 'attack'
+  | 'defense'
+  | 'special-attack'
+  | 'special-defense'
+  | 'speed'
+
 export type Pokemon = {
   name: string
   pokemonID: number
   species: {
     types: {
       type: {
-        name: string
+        name: PokemonType
       }
     }[]
+  }[]
+}
+
+export type PokemonDetail = {
+  name: string
+  pokemonID: string
+  types: {
+    type: {
+      name: PokemonType
+    }
+  }[]
+  moves: {
+    level: string
+    move: {
+      name: string
+    }
+  }[]
+  stats: {
+    base_stat: number
+    stat: {
+      name: StatName
+    }
   }[]
 }
