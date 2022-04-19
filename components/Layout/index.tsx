@@ -1,9 +1,13 @@
 import React from 'react'
+
 import Header from 'components/Header'
+
+import type { ButtonColors } from 'components/Button'
 
 interface LayoutProps extends React.HTMLProps<HTMLDivElement> {
   title?: string
   headerTextColor?: 'white' | 'black'
+  buttonColor?: ButtonColors
   hasBackButton?: boolean
 }
 
@@ -28,6 +32,7 @@ export const LayoutContext = React.createContext<LayoutContextProps>({
 const Layout = ({
   title: initialTitle = '',
   hasBackButton,
+  buttonColor = 'white',
   children,
 }: LayoutProps) => {
   const [title, setTitle] = React.useState<string>(initialTitle)
@@ -46,7 +51,7 @@ const Layout = ({
         setHeaderTextColor,
       }}
     >
-      <Header hasBackButton={hasBackButton} />
+      <Header hasBackButton={hasBackButton} buttonColor={buttonColor} />
       <div className="pt-[60px] h-screen">{children}</div>
     </LayoutContext.Provider>
   )

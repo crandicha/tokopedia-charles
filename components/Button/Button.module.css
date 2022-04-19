@@ -19,6 +19,18 @@
   @apply bg-white bg-opacity-50
 }
 
+.white {
+  @apply bg-white border border-gray-200
+}
+
+.white:hover {
+  @apply bg-gray-100
+}
+
+.white:active{
+  @apply bg-gray-200
+}
+
 .blue{
   @apply bg-blue-400 text-white;
 }
