@@ -1,0 +1,61 @@
+@keyframes scaledown {
+  0% {
+    transform: scale(120%)
+  }
+  100% {
+    transform: scale(100%)
+  }
+}
+
+@keyframes wiggle {
+  0% {
+    transform: rotate(0)
+  }
+  35% {
+    transform: rotate(0)
+  }
+  40% {
+    transform: rotate(-30deg)
+  }
+  60% {
+    transform: rotate(30deg)
+  }
+  65% {
+    transform: rotate(0)
+  }
+  100% {
+    transform: rotate(0)
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(100%)
+  }
+  50%{
+    transform: scale(110%)
+  }
+  100% {
+    transform: scale(100%)
+  }
+}
+
+.idle {}
+
+.attempt{
+  animation:scaledown;
+  animation-duration: 1000ms;
+}
+
+.waiting {
+  animation: wiggle;
+  animation-iteration-count: infinite;
+  animation-duration: 1000ms;
+}
+
+.failed {}
+
+.success {
+  animation: pop;
+  animation-duration: 500ms;
+}
