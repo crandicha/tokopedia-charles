@@ -2,7 +2,7 @@ import React from 'react'
 
 interface PokemonMovesProps {
   name: string
-  level: string
+  level: number
 }
 
 const PokemonMoves = ({ name, level }: PokemonMovesProps) => {
