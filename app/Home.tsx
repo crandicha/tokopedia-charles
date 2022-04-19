@@ -57,9 +57,11 @@ const Home = () => {
           <PokemonCard data={pokemon} key={index} />
         ))}
       </div>
-      <div className="my-20">
-        <Spinner />
-      </div>
+      {isLoading && (
+        <div className="my-20">
+          <Spinner />
+        </div>
+      )}
       <div ref={loaderRef}></div>
     </div>
   )

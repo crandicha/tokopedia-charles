@@ -29,7 +29,7 @@ const PokemonCard = ({ data }: PokemonCardProps) => {
   return (
     <div
       className={clsx(
-        'w-[200px] rounded-md p-4 flex flex-col shadow-md hover:scale-110 hover:shadow-xl cursor-pointer',
+        'w-[200px] rounded-md p-2 flex flex-col shadow-md hover:scale-110 hover:shadow-xl cursor-pointer',
         pokemonStyles[`pokemon-${data?.species?.[0]?.types?.[0]?.type?.name}`]
       )}
     >
