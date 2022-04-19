@@ -1,4 +1,6 @@
-const colors = {
+import type { PokemonType } from 'types/pokemon'
+
+const colors: Record<PokemonType, string> = {
   grass: `#78C850`,
   fire: `#F08030`,
   water: `#6890F0`,

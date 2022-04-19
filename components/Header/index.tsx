@@ -16,11 +16,14 @@ const Header = ({ hasBackButton = false, className }: HeaderProps) => {
   return (
     <div
       className={clsx(
-        `bg-[${headerColor}] h-[60px] flex flex-row items-center fixed top-0 w-full z-10`,
+        `h-[60px] flex flex-row items-center fixed top-0 w-full z-10`,
         headerTextColor === 'black' ? '!text-black' : '!text-white',
         !atTop && 'shadow-lg',
         className
       )}
+      style={{
+        backgroundColor: headerColor,
+      }}
     >
       {hasBackButton && (
         <Button className="ml-4" onClick={() => window.history.back()}>

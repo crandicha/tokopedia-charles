@@ -47,7 +47,7 @@ const Layout = ({
       }}
     >
       <Header hasBackButton={hasBackButton} />
-      <div className="pt-[70px] h-full">{children}</div>
+      <div className="pt-[60px] h-screen">{children}</div>
     </LayoutContext.Provider>
   )
 }
