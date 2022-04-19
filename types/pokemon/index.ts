@@ -47,7 +47,7 @@ export type PokemonDetail = {
     }
   }[]
   moves: {
-    level: string
+    level: number
     move: {
       name: string
     }

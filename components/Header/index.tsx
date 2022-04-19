@@ -1,5 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
+import Link from 'next/link'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import Button from 'components/Button'
 import { LayoutContext } from 'components/Layout'
@@ -7,9 +8,14 @@ import useScrollFromTop from 'utils/hooks/scroll'
 
 interface HeaderProps extends React.HTMLProps<HTMLDivElement> {
   hasBackButton?: boolean
+  backButtonLink?: string
 }
 
-const Header = ({ hasBackButton = false, className }: HeaderProps) => {
+const Header = ({
+  hasBackButton = false,
+  backButtonLink = '/',
+  className,
+}: HeaderProps) => {
   const atTop = useScrollFromTop()
   const { title, headerTextColor, headerColor } =
     React.useContext(LayoutContext)
@@ -26,13 +32,17 @@ const Header = ({ hasBackButton = false, className }: HeaderProps) => {
       }}
     >
       {hasBackButton && (
-        <Button className="ml-4" onClick={() => window.history.back()}>
-          <ArrowBackIosIcon
-            className={
-              headerTextColor === 'white' ? '!text-white' : '!text-black'
-            }
-          />
-        </Button>
+        <Link href={backButtonLink} passHref>
+          <a>
+            <Button className="ml-4">
+              <ArrowBackIosIcon
+                className={
+                  headerTextColor === 'white' ? '!text-white' : '!text-black'
+                }
+              />
+            </Button>
+          </a>
+        </Link>
       )}
       <div className="ml-4 font-semibold text-3xl flex-1">{title}</div>
     </div>

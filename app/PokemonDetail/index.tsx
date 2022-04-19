@@ -23,6 +23,9 @@ const PokemonDetail = () => {
     null
   )
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const sortedPokemonMoves = [...(pokemonData?.moves || [])].sort(
+    (a, b) => a?.level - b?.level
+  )
 
   const loadPokemonData = async (name: string) => {
     setIsLoading(true)
@@ -37,7 +40,9 @@ const PokemonDetail = () => {
     setHeaderColor(backgroundColor)
     setBackgroundColor(backgroundColor)
     setHeaderTextColor('white')
-    setPokemonSprite(getPokemonSprite(pokemonData?.pokemonID as string))
+    if (pokemonData?.pokemonID) {
+      setPokemonSprite(getPokemonSprite(pokemonData?.pokemonID as string))
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pokemonData])
 
@@ -107,7 +112,7 @@ const PokemonDetail = () => {
             <div className="flex flex-col p-4 items-center rounded-lg shadow-md bg-gray-100 gap-4">
               <div className="flex-1 font-semibold text-lg">Moves</div>
               <div className="flex-[2_2_0px] flex flex-row flex-wrap gap-4">
-                {pokemonData?.moves?.map((move, index) => (
+                {sortedPokemonMoves?.map((move, index) => (
                   <PokemonMoves
                     name={move?.move?.name}
                     level={move?.level}
