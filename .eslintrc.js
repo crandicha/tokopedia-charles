@@ -21,24 +21,5 @@ module.exports = {
         allow: ['warn', 'error'],
       },
     ],
-    'import/order': [
-      'error',
-      {
-        groups: [
-          'builtin',
-          'external',
-          ['internal', 'parent', 'sibling', 'index'],
-          'type',
-          'unknown',
-        ],
-        pathGroups: [
-          { pattern: '@wartek-id/*', group: 'external', position: 'after' },
-          { pattern: 'assets/**', group: 'unknown', position: 'after' },
-          { pattern: 'styles/**', group: 'unknown', position: 'after' },
-        ],
-        pathGroupsExcludedImportTypes: [],
-        'newlines-between': 'always',
-      },
-    ],
   },
 }
