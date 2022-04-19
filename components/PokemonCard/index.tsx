@@ -1,24 +1,33 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import PokemonTypePills from 'components/PokemonTypePills'
-import pokemonStyles from 'styles/pokemon.module.css'
 import clsx from 'clsx'
+
+import PokemonTypePills from 'components/PokemonTypePills'
 import { getPokemonSprite } from 'utils/image'
+
 import type { Pokemon, PokemonType } from 'types/pokemon'
+
+import pokemonStyles from 'styles/pokemon.module.css'
 
 interface PokemonCardProps {
   data: Pokemon
+  owned: number
 }
 
-const PokemonCard = ({ data }: PokemonCardProps) => {
+const PokemonCard = ({ data, owned }: PokemonCardProps) => {
   const pokemonSprite = getPokemonSprite(data?.pokemonID)
   return (
     <Link href={`/pokemon/${data?.name}`}>
-      <a>
+      <a className="relative hover:scale-110 hover:shadow-xl">
+        {!!owned && (
+          <div className="absolute top-[5px] left-[5px] bg-white rounded-full w-6 h-6 flex justify-center items-center">
+            {owned}
+          </div>
+        )}
         <div
           className={clsx(
-            'w-[200px] rounded-md p-2 flex flex-col shadow-md hover:scale-110 hover:shadow-xl cursor-pointer',
+            'w-[200px] rounded-md p-2 flex flex-col shadow-md cursor-pointer',
             pokemonStyles[
               `pokemon-${data?.species?.[0]?.types?.[0]?.type?.name}`
             ]

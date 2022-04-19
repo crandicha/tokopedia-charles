@@ -75,6 +75,7 @@ const PokemonDetail = () => {
       {
         nickname: pokemonNickname,
         data: pokemonData,
+        name: pokemonData?.name,
       },
     ])
     setPokemonNickname('')
