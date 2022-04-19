@@ -3,7 +3,7 @@ import App from 'app/Home'
 
 const Home = () => {
   return (
-    <Layout title="Pokedex">
+    <Layout title="Pokedex" showBag>
       <App />
     </Layout>
   )

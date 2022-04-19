@@ -15,12 +15,14 @@ interface HeaderProps extends React.HTMLProps<HTMLDivElement> {
   hasBackButton?: boolean
   buttonColor: ButtonColors
   backButtonLink?: string
+  showBag?: boolean
 }
 
 const Header = ({
   hasBackButton = false,
   backButtonLink = '/',
   buttonColor,
+  showBag = false,
   className,
 }: HeaderProps) => {
   const atTop = useScrollFromTop()
@@ -52,20 +54,22 @@ const Header = ({
         </Link>
       )}
       <div className="ml-4 font-semibold text-3xl flex-1">{title}</div>
-      <div className="mr-4">
-        <Link href="/my-pokemons">
-          <a>
-            <Button color={buttonColor}>
-              <Image
-                src={BagIcon}
-                width="20"
-                height="20"
-                alt="My Pokemon List"
-              ></Image>
-            </Button>
-          </a>
-        </Link>
-      </div>
+      {showBag && (
+        <div className="mr-4">
+          <Link href="/my-pokemons">
+            <a>
+              <Button color={buttonColor}>
+                <Image
+                  src={BagIcon}
+                  width="20"
+                  height="20"
+                  alt="My Pokemon List"
+                ></Image>
+              </Button>
+            </a>
+          </Link>
+        </div>
+      )}
     </div>
   )
 }

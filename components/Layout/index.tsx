@@ -8,6 +8,8 @@ interface LayoutProps extends React.HTMLProps<HTMLDivElement> {
   title?: string
   headerTextColor?: 'white' | 'black'
   buttonColor?: ButtonColors
+  showBag?: boolean
+  backButtonLink?: string
   hasBackButton?: boolean
 }
 
@@ -33,6 +35,8 @@ const Layout = ({
   title: initialTitle = '',
   hasBackButton,
   buttonColor = 'white',
+  showBag = false,
+  backButtonLink = '/',
   children,
 }: LayoutProps) => {
   const [title, setTitle] = React.useState<string>(initialTitle)
@@ -51,7 +55,12 @@ const Layout = ({
         setHeaderTextColor,
       }}
     >
-      <Header hasBackButton={hasBackButton} buttonColor={buttonColor} />
+      <Header
+        hasBackButton={hasBackButton}
+        buttonColor={buttonColor}
+        backButtonLink={backButtonLink}
+        showBag={showBag}
+      />
       <div className="pt-[60px] h-screen">{children}</div>
     </LayoutContext.Provider>
   )

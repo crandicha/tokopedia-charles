@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 
+import Button from 'components/Button'
 import PokemonTypePills from 'components/PokemonTypePills'
 import { getPokemonSprite } from 'utils/image'
 
@@ -12,14 +13,23 @@ import pokemonStyles from 'styles/pokemon.module.css'
 
 interface PokemonCardProps {
   data: Pokemon
-  owned: number
+  nickname?: string
+  owned?: number
+  type?: 'home' | 'my-pokemon'
+  onRelease?: () => void
 }
 
-const PokemonCard = ({ data, owned }: PokemonCardProps) => {
+const PokemonCard = ({
+  data,
+  owned,
+  type,
+  nickname,
+  onRelease,
+}: PokemonCardProps) => {
   const pokemonSprite = getPokemonSprite(data?.pokemonID)
   return (
     <Link href={`/pokemon/${data?.name}`}>
-      <a className="relative hover:scale-110 hover:shadow-xl">
+      <a className={clsx('relative hover:scale-110 hover:shadow-xl')}>
         {!!owned && (
           <div className="absolute top-[5px] left-[5px] bg-white rounded-full w-6 h-6 flex justify-center items-center">
             {owned}
@@ -42,17 +52,35 @@ const PokemonCard = ({ data, owned }: PokemonCardProps) => {
             />
           </div>
           <div className="bg-white p-2 rounded-md">
-            <div className="font-semibold capitalize mb-2 flex justify-center">
-              #{data?.pokemonID} {data?.name}
+            <div className="mb-2 text-center">
+              <div className="font-semibold capitalize">
+                #{data?.pokemonID} {data?.name}{' '}
+              </div>
+              {type === 'my-pokemon' && <div>({nickname})</div>}
             </div>
             <div className="flex flex-row gap-2">
-              {data?.species[0]?.types?.map((type, index) => (
+              {data?.species?.[0]?.types?.map((type, index) => (
                 <PokemonTypePills
                   type={type?.type?.name as PokemonType}
                   key={index}
                 />
               ))}
             </div>
+            {type === 'my-pokemon' && (
+              <div className="mt-2">
+                <Button
+                  color="red"
+                  className="w-full"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    onRelease?.()
+                  }}
+                >
+                  Release
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </a>

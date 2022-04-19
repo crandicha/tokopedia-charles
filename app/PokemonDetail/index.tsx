@@ -19,6 +19,7 @@ import { setCache, getCache, MY_POKEMON_LIST_KEY } from 'utils/helpers/cache'
 import styles from './PokemonDetail.module.css'
 
 import type { PokemonDetail as PokemonDetailTypes } from 'types/pokemon'
+import md5 from 'md5'
 
 type CatchPokemonState = 'idle' | 'attempt' | 'waiting' | 'failed' | 'success'
 
@@ -74,7 +75,15 @@ const PokemonDetail = () => {
       ...(dbData || []),
       {
         nickname: pokemonNickname,
-        data: pokemonData,
+        data: {
+          ...pokemonData,
+          species: [
+            {
+              types: pokemonData?.types,
+            },
+          ],
+        },
+        id: md5(new Date().toISOString()),
         name: pokemonData?.name,
       },
     ])
@@ -91,7 +100,7 @@ const PokemonDetail = () => {
     setBackgroundColor(backgroundColor)
     setHeaderTextColor('white')
     if (pokemonData?.pokemonID) {
-      setPokemonSprite(getPokemonSprite(pokemonData?.pokemonID as string))
+      setPokemonSprite(getPokemonSprite(pokemonData?.pokemonID as number))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pokemonData])
